@@ -19,7 +19,7 @@ Python and CVXOPT must be installed.
 ## Installation and test
 
 ```julia
-Pkg.close("https://github.com/cvxopt/CvxOpt.jl")
+Pkg.clone("https://github.com/cvxopt/CvxOpt.jl")
 Pkg.test("CvxOpt")
 ```
 
