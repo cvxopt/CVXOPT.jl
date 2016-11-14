@@ -1,5 +1,8 @@
 using CvxOpt
 using Base.Test
 
-# write your own tests here
-@test 1 == 2
+include("test1.jl")
+include("test2.jl")
+include("test3.jl")
+include("test4.jl")
+include("test5.jl")
