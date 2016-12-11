@@ -12,10 +12,6 @@ The package provides Julia wrappers for the following CVXOPT solvers:
 - [cvxopt.solvers.sdp](http://cvxopt.org/userguide/coneprog.html?#semidefinite-programming)
 
 
-## Requirements
-
-Python and CVXOPT must be installed. 
-
 ## Installation and test
 
 ```julia

@@ -1,8 +1,13 @@
 module CvxOpt
-
 using PyCall
-@pyimport cvxopt
-@pyimport cvxopt.solvers as solvers
+
+const cvxopt = PyNULL()
+const solvers = PyNULL()
+
+function __init__()
+    copy!(cvxopt, pyimport_conda("cvxopt", "cvxopt", "conda-forge"))
+    copy!(solvers, pyimport_conda("cvxopt.solvers", "cvxopt"))
+end
 
 #
 # CVXOPT conelp() interface
@@ -21,7 +26,7 @@ function conelp(c,G,h,dims;A=[],b=[],options=Dict())
   py_opts = PyObject(options);
 
   # Call cvxopt.solvers.conelp()
-  sol = solvers.conelp(cp,Gp,hp,py_dims,A=Ap,b=bp,options=py_opts);
+  sol = solvers[:conelp](cp,Gp,hp,py_dims,A=Ap,b=bp,options=py_opts);
 
   # Convert solution to Julia arrays
   sol["x"] = cvxopt_to_julia(sol["x"])
@@ -50,7 +55,7 @@ function coneqp(P,q,G,h,dims;A=[],b=[],options=Dict())
   py_opts = PyObject(options);
 
   # Call cvxopt.solvers.coneqp()
-  sol = solvers.coneqp(Pp,qp,Gp,hp,py_dims,A=Ap,b=bp,options=py_opts);
+  sol = solvers[:coneqp](Pp,qp,Gp,hp,py_dims,A=Ap,b=bp,options=py_opts);
 
   # Convert solution to Julia arrays
   sol["x"] = cvxopt_to_julia(sol["x"])
@@ -77,7 +82,7 @@ function lp(c,G,h;A=[],b=[],options=Dict())
   py_opts = PyObject(options);
 
   # Call cvxopt.solvers.lp()
-  sol = solvers.lp(cp,Gp,hp;A=Ap,b=bp,options=py_opts);
+  sol = solvers[:lp](cp,Gp,hp;A=Ap,b=bp,options=py_opts);
 
   # Convert solution to Julia arrays
   sol["x"] = cvxopt_to_julia(sol["x"])
@@ -105,7 +110,7 @@ function qp(P,q,G,h;A=[],b=[],options=Dict())
   py_opts = PyObject(options);
 
   # Call cvxopt.solvers.qp()
-  sol = solvers.qp(Pp,qp,Gp,hp,A=Ap,b=bp,options=opts);
+  sol = solvers[:qp](Pp,qp,Gp,hp,A=Ap,b=bp,options=opts);
 
   # Convert solution to Julia arrays
   sol["x"] = cvxopt_to_julia(sol["x"])
@@ -141,7 +146,7 @@ function socp(c,Gl,hl,Gq,hq;A=[],b=[],options=Dict())
   py_opts = PyObject(options);
 
   # Call cvxopt.solvers.socp()
-  sol = solvers.socp(cp, Gl=Glp, hl=hlp, Gq=Gqp, hq=hqp, A=Ap, b=bp, options=py_opts);
+  sol = solvers[:socp](cp, Gl=Glp, hl=hlp, Gq=Gqp, hq=hqp, A=Ap, b=bp, options=py_opts);
 
   # Convert solution to Julia arrays
   sol["x"] = cvxopt_to_julia(sol["x"]);
@@ -182,7 +187,7 @@ function sdp(c, Gl, hl, Gs, hs; A=[], b=[], options=Dict())
   py_opts = PyObject(options);
 
   # Call cvxopt.solvers.sdp()
-  sol = solvers.sdp(cp, Gl=Glp, hl=hlp, Gs=Gsp, hs=hsp, A=Ap, b=bp, options=py_opts);
+  sol = solvers[:sdp](cp, Gl=Glp, hl=hlp, Gs=Gsp, hs=hsp, A=Ap, b=bp, options=py_opts);
 
   # Convert solution to Julia arrays
   sol["x"] = cvxopt_to_julia(sol["x"]);
@@ -208,11 +213,11 @@ function julia_to_cvxopt(A)
     for i = 1:size(A,2)
       J[A.colptr[i]:A.colptr[i+1]-1] = i;
     end
-    Ap = cvxopt.spmatrix(PyVector(A.nzval),PyVector(A.rowval-1),PyVector(J-1),(size(A,1),size(A,2)));
+    Ap = cvxopt[:spmatrix](PyVector(A.nzval),PyVector(A.rowval-1),PyVector(J-1),(size(A,1),size(A,2)));
   elseif isempty(A)
     Ap = pybuiltin("None");
   else
-    Ap = cvxopt.matrix(A);
+    Ap = cvxopt[:matrix](A);
   end
   return Ap;
 end
