@@ -12,5 +12,5 @@ let
 
   dims = Dict([("l",n), ("q",[n+1]), ("s",[])])
 
-  sol = CvxOpt.coneqp(A'*A, -A'*b, G, h, dims)
+  sol = CVXOPT.coneqp(A'*A, -A'*b, G, h, dims)
 end

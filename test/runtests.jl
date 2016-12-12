@@ -1,4 +1,4 @@
-using CvxOpt
+using CVXOPT
 using Base.Test
 
 include("test1.jl")

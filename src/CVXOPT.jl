@@ -1,4 +1,4 @@
-module CvxOpt
+module CVXOPT
 using PyCall
 
 const cvxopt = PyNULL()

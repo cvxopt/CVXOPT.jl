@@ -10,6 +10,6 @@ let
   #opts = Dict([("kktsolver","qr"),("maxiters",100),("refinement",2),
   #             ("reltol",1e-8),("abstol",1e-8),("feastol",1e-8),("debug",false)]);
 
-  sol = CvxOpt.conelp(c,sparse(G),h,dims);
+  sol = CVXOPT.conelp(c,sparse(G),h,dims);
   @test ( 1 == 1 )
 end

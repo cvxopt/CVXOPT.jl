@@ -1,4 +1,4 @@
-# CvxOpt.jl
+# CVXOPT.jl
 
 Julia interface to CVXOPT.
 
@@ -15,18 +15,16 @@ The package provides Julia wrappers for the following CVXOPT solvers:
 ## Installation and test
 
 ```julia
-Pkg.clone("https://github.com/cvxopt/CvxOpt.jl")
-Pkg.test("CvxOpt")
+Pkg.clone("https://github.com/cvxopt/CVXOPT.jl")
+Pkg.test("CVXOPT")
 ```
 
+## Build status
+
+[![Build Status](https://travis-ci.org/cvxopt/CVXOPT.jl.svg?branch=master)](https://travis-ci.org/cvxopt/CVXOPT.jl)
+
+[![Coverage Status](https://coveralls.io/repos/cvxopt/CVXOPT.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/cvxopt/CVXOPT.jl?branch=master)
+
+[![codecov.io](http://codecov.io/github/cvxopt/CVXOPT.jl/coverage.svg?branch=master)](http://codecov.io/github/cvxopt/CVXOPT.jl?branch=master)
 
 
-<!---
-
-[![Build Status](https://travis-ci.org/cvxopt/CvxOpt.jl.svg?branch=master)](https://travis-ci.org/cvxopt/CvxOpt.jl)
-
-[![Coverage Status](https://coveralls.io/repos/cvxopt/CvxOpt.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/cvxopt/CvxOpt.jl?branch=master)
-
-[![codecov.io](http://codecov.io/github/cvxopt/CvxOpt.jl/coverage.svg?branch=master)](http://codecov.io/github/cvxopt/CvxOpt.jl?branch=master)
-
--->

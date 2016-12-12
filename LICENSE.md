@@ -1,4 +1,4 @@
-The CvxOpt.jl package is licensed under the GNU Public License, Version 3.0+:
+The CVXOPT.jl package is licensed under the GNU Public License, Version 3.0+:
 
 > Copyright (c) 2016: Martin Andersen.
 > This program is free software: you can redistribute it and/or modify
