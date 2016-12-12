@@ -5,7 +5,6 @@ os:
   - osx
 julia:
   - release
-  - nightly
 env:
   - PYTHON=""
 notifications:
