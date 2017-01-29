@@ -20,8 +20,8 @@ that version of Python. Alternatively, you can force PyCall to use
 Julia by setting `PYTHON=""`:
 
 ```julia
-ENV["PYTHON"]=""  # Force PyCall to use Conda.jl
-Pkg.clone("https://github.com/cvxopt/CVXOPT.jl")
+ENV["PYTHON"]=""  # Optional: force PyCall to use Conda.jl
+Pkg.add("CVXOPT")
 Pkg.test("CVXOPT")
 ```
 
