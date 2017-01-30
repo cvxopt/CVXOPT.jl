@@ -110,7 +110,7 @@ function qp(P,q,G,h;A=[],b=[],options=Dict())
   py_opts = PyObject(options);
 
   # Call cvxopt.solvers.qp()
-  sol = solvers[:qp](Pp,qp,Gp,hp,A=Ap,b=bp,options=opts);
+  sol = solvers[:qp](Pp,qp,Gp,hp,A=Ap,b=bp,options=py_opts);
 
   # Convert solution to Julia arrays
   sol["x"] = cvxopt_to_julia(sol["x"])
