@@ -22,7 +22,7 @@ function conelp(c,G,h,dims;A=[],b=[],options=Dict())
   bp = julia_to_cvxopt(b);
 
   # Convert 'dims' and 'options' dictionaries to Python dictionaries
-  py_dims = PyObject(pyeval("{'l':l,'q':list(q),'s':list(s)}", l=dims["l"],q=dims["q"],s=dims["s"]));
+  py_dims = py"{'l':$(dims[\"l\"]),'q':list($(dims[\"q\"])),'s':list($(dims[\"s\"]))}"o;
   py_opts = PyObject(options);
 
   # Call cvxopt.solvers.conelp()
@@ -51,7 +51,7 @@ function coneqp(P,q,G,h,dims;A=[],b=[],options=Dict())
   bp = julia_to_cvxopt(b);
 
   # Convert 'dims' and 'options' dictionaries to Python dictionaries
-  py_dims = PyObject(pyeval("{'l':l,'q':list(q),'s':list(s)}", l=dims["l"],q=dims["q"],s=dims["s"]));
+  py_dims = py"{'l':$(dims[\"l\"]),'q':list($(dims[\"q\"])),'s':list($(dims[\"s\"]))}"o;
   py_opts = PyObject(options);
 
   # Call cvxopt.solvers.coneqp()
@@ -224,8 +224,8 @@ end
 
 # Convert CVXOPT matrix to Julia array
 function cvxopt_to_julia(A)
-  m,n = pyeval("x.size",x=A);
-  Aj = Array{Float64}(reshape(pyeval("list(x[:])",x=A),m,n));
+  m,n = py"$(A).size";
+  Aj = Array{Float64}(reshape(py"list($(A)[:])",m,n));
   return Aj;
 end
 
