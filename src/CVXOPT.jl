@@ -1,3 +1,4 @@
+"CVXOPT.jl - a Julia interface to CVXOPT"
 module CVXOPT
 using PyCall
 
@@ -10,8 +11,16 @@ function __init__()
 end
 
 #
-# CVXOPT conelp() interface
+# Wrappers
 #
+
+"""
+CVXOPT conelp() interface
+
+See CVXOPT documentation for more information:
+
+  http://cvxopt.org/userguide/coneprog.html#linear-cone-programs
+"""
 function conelp(c,G,h,dims;A=[],b=[],options=Dict())
 
   # Convert problem data to CVXOPT matrices
@@ -37,9 +46,14 @@ function conelp(c,G,h,dims;A=[],b=[],options=Dict())
   return sol;
 end
 
-#
-# CVXOPT coneqp() interface
-#
+
+"""
+CVXOPT coneqp() interface
+
+See CVXOPT documentation for more information:
+
+  http://cvxopt.org/userguide/coneprog.html#quadratic-cone-programs
+"""
 function coneqp(P,q,G,h,dims;A=[],b=[],options=Dict())
 
   # Convert problem data to CVXOPT matrices
@@ -66,9 +80,14 @@ function coneqp(P,q,G,h,dims;A=[],b=[],options=Dict())
   return sol;
 end
 
-#
-# CVXOPT lp() interface
-#
+
+"""
+CVXOPT lp() interface
+
+See CVXOPT documentation for more information:
+
+  http://cvxopt.org/userguide/coneprog.html#linear-programming
+"""
 function lp(c,G,h;A=[],b=[],options=Dict())
 
   # Convert problem data to CVXOPT matrices
@@ -93,9 +112,14 @@ function lp(c,G,h;A=[],b=[],options=Dict())
   return sol;
 end
 
-#
-# CVXOPT qp() interface
-#
+
+"""
+CVXOPT qp() interface
+
+See CVXOPT documentation for more information:
+
+  http://cvxopt.org/userguide/coneprog.html#quadratic-programming
+"""
 function qp(P,q,G,h;A=[],b=[],options=Dict())
 
   # Convert problem data to CVXOPT matrices
@@ -121,9 +145,14 @@ function qp(P,q,G,h;A=[],b=[],options=Dict())
   return sol;
 end
 
-#
-# CVXOPT socp() interface
-#
+
+"""
+CVXOPT socp() interface
+
+See CVXOPT documentation for more information:
+
+  http://cvxopt.org/userguide/coneprog.html#second-order-cone-programming
+"""
 function socp(c,Gl,hl,Gq,hq;A=[],b=[],options=Dict())
 
   # Convert problem data to CVXOPT matrices
@@ -162,9 +191,13 @@ function socp(c,Gl,hl,Gq,hq;A=[],b=[],options=Dict())
 end
 
 
-#
-# CVXOPT sdp() interface
-#
+"""
+CVXOPT sdp() interface
+
+See CVXOPT documentation for more information:
+
+  http://cvxopt.org/userguide/coneprog.html#semidefinite-programming
+"""
 function sdp(c, Gl, hl, Gs, hs; A=[], b=[], options=Dict())
 
   # Convert problem data to CVXOPT matrices
@@ -206,7 +239,9 @@ end
 # Auxiliary routines
 #
 
-# Convert Julia array to CVXOPT matrix or spmatrix
+"""
+Convert Julia array to CVXOPT matrix or spmatrix
+"""
 function julia_to_cvxopt(A)
   if issparse(A)
     J = zeros(Int64, length(A.rowval));
@@ -222,7 +257,9 @@ function julia_to_cvxopt(A)
   return Ap;
 end
 
-# Convert CVXOPT matrix to Julia array
+"""
+Convert CVXOPT matrix to Julia array
+"""
 function cvxopt_to_julia(A)
   m,n = py"$(A).size";
   Aj = Array{Float64}(reshape(py"list($(A)[:])",m,n));
