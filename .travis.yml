@@ -6,8 +6,9 @@ os:
   - osx
 
 julia:
-  - 0.5
-  - 0.6
+  - 0.7
+  - 1.0
+  - 1.1
   - nightly
 
 matrix:
@@ -20,6 +21,10 @@ env:
 notifications:
   email: false
 
+before_install:
+  # Prevent failure because conda up-/downgrades Python after installing PyCall 
+  - julia -e 'using Pkg; Pkg.add("Conda"); using Conda; Conda.add_channel("conda-forge"); Conda.add("cvxopt")'
+
 after_success:
   # push coverage results to Coveralls
-  - julia -e 'cd(Pkg.dir("CVXOPT")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
+  - julia -e 'using Pkg; cd(Pkg.dir("CVXOPT")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
