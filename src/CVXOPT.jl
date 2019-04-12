@@ -36,13 +36,7 @@ function conelp(c,G,h,dims;A=[],b=[],options=Dict())
   py_opts = PyObject(options);
 
   # Call cvxopt.solvers.conelp()
-  sol = solvers[:conelp](cp,Gp,hp,py_dims,A=Ap,b=bp,options=py_opts);
-
-  # Convert solution to Julia arrays
-  sol["x"] = cvxopt_to_julia(sol["x"])
-  sol["s"] = cvxopt_to_julia(sol["s"])
-  sol["z"] = cvxopt_to_julia(sol["z"])
-  sol["y"] = cvxopt_to_julia(sol["y"])
+  sol = solvers.conelp(cp,Gp,hp,py_dims,A=Ap,b=bp,options=py_opts);
 
   return sol;
 end
@@ -70,21 +64,7 @@ function coneqp(P,q,G,h,dims;A=[],b=[],options=Dict())
   py_opts = PyObject(options);
 
   # Call cvxopt.solvers.coneqp()
-  sol = solvers[:coneqp](Pp,qp,Gp,hp,py_dims,A=Ap,b=bp,options=py_opts);
-
-  # Convert solution to Julia arrays
-  if sol["status"] == "optimal"
-    sol["s"] = cvxopt_to_julia(sol["s"])
-    sol["x"] = cvxopt_to_julia(sol["x"])
-    sol["z"] = cvxopt_to_julia(sol["z"])
-    sol["y"] = cvxopt_to_julia(sol["y"])
-  elseif sol["status"] == "dual infeasible"
-    sol["s"] = cvxopt_to_julia(sol["s"])
-    sol["x"] = cvxopt_to_julia(sol["x"])
-  elseif sol["status"] == "primal infeasible"
-    sol["z"] = cvxopt_to_julia(sol["z"])
-    sol["y"] = cvxopt_to_julia(sol["y"])
-  end
+  sol = solvers.coneqp(Pp,qp,Gp,hp,py_dims,A=Ap,b=bp,options=py_opts);
 
   return sol;
 end
@@ -110,21 +90,7 @@ function lp(c,G,h;A=[],b=[],options=Dict())
   py_opts = PyObject(options);
 
   # Call cvxopt.solvers.lp()
-  sol = solvers[:lp](cp,Gp,hp;A=Ap,b=bp,options=py_opts);
-
-  # Convert solution to Julia arrays
-  if sol["status"] == "optimal"
-    sol["s"] = cvxopt_to_julia(sol["s"])
-    sol["x"] = cvxopt_to_julia(sol["x"])
-    sol["z"] = cvxopt_to_julia(sol["z"])
-    sol["y"] = cvxopt_to_julia(sol["y"])
-  elseif sol["status"] == "dual infeasible"
-    sol["s"] = cvxopt_to_julia(sol["s"])
-    sol["x"] = cvxopt_to_julia(sol["x"])
-  elseif sol["status"] == "primal infeasible"
-    sol["z"] = cvxopt_to_julia(sol["z"])
-    sol["y"] = cvxopt_to_julia(sol["y"])
-  end
+  sol = solvers.lp(cp,Gp,hp;A=Ap,b=bp,options=py_opts);
 
   return sol;
 end
@@ -151,21 +117,7 @@ function qp(P,q,G,h;A=[],b=[],options=Dict())
   py_opts = PyObject(options);
 
   # Call cvxopt.solvers.qp()
-  sol = solvers[:qp](Pp,qp,Gp,hp,A=Ap,b=bp,options=py_opts);
-
-  # Convert solution to Julia arrays
-  if sol["status"] == "optimal"
-    sol["s"] = cvxopt_to_julia(sol["s"])
-    sol["x"] = cvxopt_to_julia(sol["x"])
-    sol["z"] = cvxopt_to_julia(sol["z"])
-    sol["y"] = cvxopt_to_julia(sol["y"])
-  elseif sol["status"] == "dual infeasible"
-    sol["s"] = cvxopt_to_julia(sol["s"])
-    sol["x"] = cvxopt_to_julia(sol["x"])
-  elseif sol["status"] == "primal infeasible"
-    sol["z"] = cvxopt_to_julia(sol["z"])
-    sol["y"] = cvxopt_to_julia(sol["y"])
-  end
+  sol = solvers.qp(Pp,qp,Gp,hp,A=Ap,b=bp,options=py_opts);
 
   return sol;
 end
@@ -200,31 +152,7 @@ function socp(c,Gl,hl,Gq,hq;A=[],b=[],options=Dict())
   py_opts = PyObject(options);
 
   # Call cvxopt.solvers.socp()
-  sol = solvers[:socp](cp, Gl=Glp, hl=hlp, Gq=Gqp, hq=hqp, A=Ap, b=bp, options=py_opts);
-
-  # Convert solution to Julia arrays
-  if sol["status"] == "optimal"
-    sol["x"] = cvxopt_to_julia(sol["x"])
-    sol["y"] = cvxopt_to_julia(sol["y"])
-    sol["sl"] = cvxopt_to_julia(sol["sl"]);
-    sol["zl"] = cvxopt_to_julia(sol["zl"]);
-    for i = 1:length(Gq)
-      sol["sq"][i] = cvxopt_to_julia(sol["sq"][i]);
-      sol["zq"][i] = cvxopt_to_julia(sol["zq"][i]);
-    end
-  elseif sol["status"] == "dual infeasible"
-    sol["sl"] = cvxopt_to_julia(sol["sl"])
-    sol["x"] = cvxopt_to_julia(sol["x"])
-    for i = 1:length(Gq)
-      sol["sq"][i] = cvxopt_to_julia(sol["sq"][i]);
-    end
-  elseif sol["status"] == "primal infeasible"
-    sol["zl"] = cvxopt_to_julia(sol["zl"])
-    sol["y"] = cvxopt_to_julia(sol["y"])
-    for i = 1:length(Gq)
-      sol["zq"][i] = cvxopt_to_julia(sol["zq"][i]);
-    end
-  end
+  sol = solvers.socp(cp, Gl=Glp, hl=hlp, Gq=Gqp, hq=hqp, A=Ap, b=bp, options=py_opts);
 
   return sol;
 end
@@ -259,31 +187,7 @@ function sdp(c, Gl, hl, Gs, hs; A=[], b=[], options=Dict())
   py_opts = PyObject(options);
 
   # Call cvxopt.solvers.sdp()
-  sol = solvers[:sdp](cp, Gl=Glp, hl=hlp, Gs=Gsp, hs=hsp, A=Ap, b=bp, options=py_opts);
-
-  # Convert solution to Julia arrays
-  if sol["status"] == "optimal"
-    sol["x"] = cvxopt_to_julia(sol["x"])
-    sol["y"] = cvxopt_to_julia(sol["y"])
-    sol["sl"] = cvxopt_to_julia(sol["sl"]);
-    sol["zl"] = cvxopt_to_julia(sol["zl"]);
-    for i = 1:length(Gs)
-      sol["ss"][i] = cvxopt_to_julia(sol["ss"][i]);
-      sol["zs"][i] = cvxopt_to_julia(sol["zs"][i]);
-    end
-  elseif sol["status"] == "dual infeasible"
-    sol["sl"] = cvxopt_to_julia(sol["sl"])
-    sol["x"] = cvxopt_to_julia(sol["x"])
-    for i = 1:length(Gs)
-      sol["ss"][i] = cvxopt_to_julia(sol["ss"][i]);
-    end
-  elseif sol["status"] == "primal infeasible"
-    sol["zl"] = cvxopt_to_julia(sol["zl"])
-    sol["y"] = cvxopt_to_julia(sol["y"])
-    for i = 1:length(Gs)
-      sol["zs"][i] = cvxopt_to_julia(sol["zs"][i]);
-    end
-  end
+  sol = solvers.sdp(cp, Gl=Glp, hl=hlp, Gs=Gsp, hs=hsp, A=Ap, b=bp, options=py_opts);
 
   return sol
 end
@@ -299,9 +203,11 @@ function julia_to_cvxopt(A)
   if issparse(A)
     J = zeros(Int64, length(A.rowval));
     for i = 1:size(A,2)
-      J[A.colptr[i]:A.colptr[i+1]-1] .= i;
+      J[A.colptr[i]:A.colptr[i+1]-1] .= i - 1;
     end
-    Ap = cvxopt[:spmatrix](PyVector(A.nzval),PyVector(A.rowval.-1),PyVector(J.-1),(size(A,1),size(A,2)));
+    I = A.rowval .- 1
+    V = A.nzval
+    Ap = @pycall  cvxopt.spmatrix(py"list($$V)"o,py"list($$I)"o,py"list($$J)"o,(size(A,1),size(A,2)))::PyObject;
   elseif isempty(A)
     Ap = pybuiltin("None");
   else
@@ -309,18 +215,9 @@ function julia_to_cvxopt(A)
     if length(sA) == 1
       sA = (sA[1],1)
     end
-    Ap = cvxopt[:matrix](A[:],sA);
+    Ap = @pycall cvxopt.matrix(py"list($(A[:]))"o,sA)::PyObject;
   end
   return Ap;
-end
-
-"""
-Convert CVXOPT matrix to Julia array
-"""
-function cvxopt_to_julia(A)
-  m,n = py"$(A).size";
-  Aj = Array{Float64}(reshape(py"list($(A)[:])",m,n));
-  return Aj;
 end
 
 end
