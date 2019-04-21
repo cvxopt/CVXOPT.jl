@@ -207,7 +207,7 @@ function julia_to_cvxopt(A)
     end
     I = A.rowval .- 1
     V = A.nzval
-    Ap = @pycall  cvxopt.spmatrix(py"list($$V)"o,py"list($$I)"o,py"list($$J)"o,(size(A,1),size(A,2)))::PyObject;
+    Ap = @pycall  cvxopt.spmatrix(PyCall.array2py(vec(V)),PyCall.array2py(vec(I)),PyCall.array2py(vec(J)),(size(A,1),size(A,2)))::PyObject;
   elseif isempty(A)
     Ap = pybuiltin("None");
   else
@@ -215,7 +215,7 @@ function julia_to_cvxopt(A)
     if length(sA) == 1
       sA = (sA[1],1)
     end
-    Ap = @pycall cvxopt.matrix(py"list($(A[:]))"o,sA)::PyObject;
+    Ap = @pycall cvxopt.matrix(PyCall.array2py(vec(A)),sA)::PyObject;
   end
   return Ap;
 end
