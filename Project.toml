@@ -1,5 +1,5 @@
 name = "CVXOPT"
-uuid = "2972302f-8f71-4210-9e1d-00f20fa701cf"
+uuid = "1a0d837d-f7ba-5e72-a8f8-b8273492ab4e"
 authors = ["Martin Andersen <martin.skovgaard.andersen@gmail.com>"]
 version = "0.3.2"
 
