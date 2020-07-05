@@ -3,12 +3,16 @@ module CVXOPT
 using PyCall
 using SparseArrays
 
+import SparseArrays: AbstractSparseMatrixCSC, SparseMatrixCSC
+import Base: convert
+
 const cvxopt = PyNULL()
 const solvers = PyNULL()
 
 function __init__()
     copy!(cvxopt, pyimport_conda("cvxopt", "cvxopt", "conda-forge"))
     copy!(solvers, pyimport_conda("cvxopt.solvers", "cvxopt"))
+    pytype_mapping(pyimport("cvxopt").spmatrix, SparseArrays.SparseMatrixCSC)
 end
 
 #
@@ -220,4 +224,24 @@ function julia_to_cvxopt(A)
   return Ap;
 end
 
+"""
+Convert CVXOPT spmatrix to SparseMatrixCSC
+"""
+
+function convert(::Type{T}, A::PyObject) where T<:AbstractSparseMatrixCSC
+
+    if A.typecode == "d"
+        r = SparseMatrixCSC(A.size[1], A.size[2],
+                            vec(A.CCS[1])::Vector{Int64} .+ 1,
+                            vec(A.CCS[2])::Vector{Int64} .+ 1,
+                            vec(A.CCS[3])::Vector{Float64})::SparseMatrixCSC{Float64, Int64}
+    elseif A.typecode == "z"
+        r = SparseMatrixCSC(A.size[1], A.size[2],
+                            vec(A.CCS[1])::Vector{Int64} .+ 1,
+                            vec(A.CCS[2])::Vector{Int64} .+ 1,
+                            vec(A.CCS[3])::Vector{ComplexF64})::SparseMatrixCSC{ComplexF64, Int64}
+    end
+    return r
 end
+
+end  # end of module
